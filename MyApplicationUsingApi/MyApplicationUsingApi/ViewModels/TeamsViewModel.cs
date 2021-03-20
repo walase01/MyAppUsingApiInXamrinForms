@@ -7,13 +7,15 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace MyApplicationUsingApi.ViewModels
 {
     public class TeamsViewModel : BaseViewModel
     {
-        public ObservableCollection<Standard> Teams { get; } = new ObservableCollection<Standard>(); 
-        public Standard Selected { get; set; }
+        public Standard referencia { get; set; }
+        public ObservableCollection<String> Teams { get; } = new ObservableCollection<String>(); 
+        public String Selected { get; set; }
 
         private IApiService apiService;
         public bool IsBusy { get; set; }
@@ -28,20 +30,32 @@ namespace MyApplicationUsingApi.ViewModels
         async Task LoadTeams()
         {
             IsBusy = true;
-            var teamsinformation = await apiService.GetCurrencyInformationAsync();
 
-            if (teamsinformation != null)
+            var teamsinformation = await apiService.GetCurrencyInformationAsync();
+            var Info = teamsinformation.League.Standard;
+
+            if((Connectivity.NetworkAccess == NetworkAccess.Internet))
             {
-                
-                foreach(var team in teamsinformation.League.Standard)
+                if (teamsinformation != null)
                 {
 
-                    Teams.Add(team);
+                    foreach (Standard team in Info)
+                    {
 
+                        Teams.Add(team.FullName.ToString());
+
+                    }
+                    Selected = Teams[0];
                 }
-                Selected = Teams.FirstOrDefault();
+                IsBusy = false;
+
             }
-            IsBusy = false;
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Error","No tiene Acceso a internet","cancel");
+            }
+
+
         }
 
     }
