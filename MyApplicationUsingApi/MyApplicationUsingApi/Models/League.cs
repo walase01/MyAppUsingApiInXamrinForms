@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using MyApplicationUsingApi.ViewModels;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace MyApplicationUsingApi.Models
 {
-    public class League
+    public class League:BaseViewModel
     {
         [JsonProperty("standard")]
         public IList<Standard> Standard { get; set; }

@@ -12,9 +12,8 @@ namespace MyApplicationUsingApi.ViewModels
 {
     public class TeamsViewModel : BaseViewModel
     {
-
-        public ObservableCollection<TeamsList> Teams { get; } = new ObservableCollection<TeamsList>();
-        public TeamsList Selected { get; set; }
+        public ObservableCollection<Standard> Teams { get; } = new ObservableCollection<Standard>(); 
+        public Standard Selected { get; set; }
 
         private IApiService apiService;
         public bool IsBusy { get; set; }
@@ -33,10 +32,11 @@ namespace MyApplicationUsingApi.ViewModels
 
             if (teamsinformation != null)
             {
-                foreach (var teams in Teams)
+                
+                foreach(var team in teamsinformation.League.Standard)
                 {
 
-                    Teams.Add(teams);
+                    Teams.Add(team);
 
                 }
                 Selected = Teams.FirstOrDefault();
